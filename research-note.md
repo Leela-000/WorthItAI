@@ -1,11 +1,6 @@
 # WorthIt AI – Research Note
 ## Startup Validation Frameworks, Multi-Agent Design Patterns and Web Search APIs
 
-**Project:** WorthIt AI – AI-Based Startup Idea Validator with Market Analysis Assistance  
-**Milestone:** 1  
-**Prepared by:** Pranjali  
-**Team:** Orion
-
 ---
 
 ## 1. Introduction
@@ -283,3 +278,8 @@ For WorthIt AI, a combination of startup validation frameworks, a supervisor-bas
 ---
 
 **Document Status:** Research draft prepared for Milestone 1. Final technology and architecture choices should be confirmed with the project team.
+
+**Project:** WorthIt AI – AI-Based Startup Idea Validator with Market Analysis Assistance  
+**Milestone:** 1  
+**Prepared by:** Pranjali  
+**Team:** Orion

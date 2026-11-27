@@ -1,7 +1,5 @@
 import { createContext, useContext, useState } from 'react'
 
-// ── Shared state: submitted idea data flows through the app ──
-
 const IdeaContext = createContext(null)
 
 export const INDUSTRIES = [
@@ -33,7 +31,17 @@ const EMPTY_IDEA = {
 
 export function IdeaProvider({ children }) {
   const [idea, setIdea] = useState(EMPTY_IDEA)
-  const [mode, setMode] = useState('quick') // 'quick' | 'guided'
+
+  const [mode, setMode] = useState('quick')
+
+  // Stores the response received from the FastAPI backend
+  const [analysisResult, setAnalysisResult] = useState(null)
+
+  // Tracks backend submission status
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Stores submission errors
+  const [submitError, setSubmitError] = useState('')
 
   function updateIdea(fields) {
     setIdea(prev => ({ ...prev, ...fields }))
@@ -42,10 +50,27 @@ export function IdeaProvider({ children }) {
   function resetIdea() {
     setIdea(EMPTY_IDEA)
     setMode('quick')
+    setAnalysisResult(null)
+    setIsSubmitting(false)
+    setSubmitError('')
   }
 
   return (
-    <IdeaContext.Provider value={{ idea, updateIdea, resetIdea, mode, setMode }}>
+    <IdeaContext.Provider
+      value={{
+        idea,
+        updateIdea,
+        resetIdea,
+        mode,
+        setMode,
+        analysisResult,
+        setAnalysisResult,
+        isSubmitting,
+        setIsSubmitting,
+        submitError,
+        setSubmitError,
+      }}
+    >
       {children}
     </IdeaContext.Provider>
   )
@@ -53,6 +78,10 @@ export function IdeaProvider({ children }) {
 
 export function useIdea() {
   const ctx = useContext(IdeaContext)
-  if (!ctx) throw new Error('useIdea must be used inside <IdeaProvider>')
+
+  if (!ctx) {
+    throw new Error('useIdea must be used inside <IdeaProvider>')
+  }
+
   return ctx
 }

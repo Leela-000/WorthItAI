@@ -7,6 +7,7 @@ from schemas import IdeaCreate
 
 from agents.idea_extraction import extract_idea
 from agents.web_search import search_web
+from agents.market_analysis import analyze_market
 
 router = APIRouter()
 
@@ -62,12 +63,29 @@ def submit_idea(idea: IdeaCreate, db: Session = Depends(get_db)):
     # Step 4: Search the web using Tavily
     web_results = search_web(search_query)
 
-    # Step 5: Return response
+    # Step 5: Analyze market using Groq
+    try:
+        market_analysis = analyze_market(
+            extracted_details,
+            web_results
+        )
+
+    except Exception as e:
+        print("Market Analysis Error:", str(e))
+
+        market_analysis = {
+            "market_insights": [],
+            "existing_solutions": [],
+            "research_signals": []
+        }
+
+    # Step 6: Return complete response
     return {
         "message": "Idea submitted and analyzed successfully!",
         "idea_id": new_idea.id,
         "extracted_details": extracted_details,
-        "web_search_results": web_results
+        "web_search_results": web_results,
+        "market_analysis": market_analysis
     }
 
 
